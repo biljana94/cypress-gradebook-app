@@ -1,0 +1,34 @@
+{
+    "header": {
+        "loginButton": "a[href='/login']",
+        "registerButton": "a[href='/register']",
+        "logoutButton": "a[href='#']",
+        "professors": {
+            "professorsDropdown": "#navbardrop",
+            "allProfessorsButton": "a[href='/all-professors']",
+            "createProfessor": ""
+        }
+    },
+    "register": {
+        "formTitle": "h2",
+        "firstName": "#firstName",
+        "lastName": "#lastName",
+        "password": "#password",
+        "confirmPassword": "#passwordConfirmation",
+        "email": "#email",
+        "checkboxTerms": "#termsAndConditions",
+        "buttonSubmit": "button[type='submit']"
+    },
+    "login": {
+        "email": "input[name='email']",
+        "password": "input[name='password']",
+        "buttonSubmit": "button[type='submit']"
+    },
+    "homePageGradebooks": {
+        "pageTitle": "h3"
+    },
+    "allProfessors": {
+        "pageTitle": "h3",
+        "filterField": "input[type='text']"
+    }
+}

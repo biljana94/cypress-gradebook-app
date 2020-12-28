@@ -66,7 +66,7 @@ describe('Register test', () => {
     // NEGATIVE TEST
     // First and Last Name should contains max 255 characters
     // Random string generator site: http://www.unit-conversion.info/texttools/random-string-generator/
-    it.only('Register with all invalid data and empty fields', () => {
+    it('Register with all invalid data and empty fields', () => {
         cy.get(locators.register.firstName).then(($input) => {
             expect($input[0].validationMessage).to.eq('Please fill out this field.')
         })

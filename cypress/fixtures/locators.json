@@ -6,7 +6,7 @@
         "professors": {
             "professorsDropdown": "#navbardrop",
             "allProfessorsButton": "a[href='/all-professors']",
-            "createProfessor": ""
+            "createProfessor": "a[href='/create-professor']"
         },
         "createGradebook": "a[href='/create-gradebook']"
     },
@@ -38,5 +38,13 @@
         "title": "#title",
         "professor": "#professor",
         "buttonSubmit": ".btn"
+    },
+    "createProfessor": {
+        "pageTitle": "h3",
+        "firstName": "#firstName",
+        "lastName": "#lastName",
+        "addImageButton": ".btn-sm",
+        "addImageInput": "input[placeholder='Image URL']",
+        "buttonSubmit": "button[type='submit']"
     }
 }

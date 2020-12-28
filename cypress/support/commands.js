@@ -11,16 +11,23 @@
 
 //LOGIN COMMAND
 //komanda ne radi jer nema rute https://gradebook-api.vivifyideas.com/api/auth/login ?????
+// Cypress.Commands.add('loginCommand', (username, pass) => {
+//     cy.request({
+//         method: 'POST',
+//         url: 'https://gradebook-api.vivifyideas.com/api/login',
+//         body: {
+//             email: username,
+//             password: pass
+//         }
+//     }).its('body').then((response) => {
+//         window.localStorage.setItem('loginToken', response.token)
+//         // console.log(response)
+//     })
+// })
+
 Cypress.Commands.add('loginCommand', (username, pass) => {
-    cy.request({
-        method: 'POST',
-        url: 'https://gradebook-api.vivifyideas.com/api/login',
-        body: {
-            email: username,
-            password: pass
-        }
-    }).its('body').then((response) => {
-        window.localStorage.setItem('loginToken', response.token)
-        // console.log(response)
-    })
+    cy.get("a[href='/login']").click()
+    cy.get("input[name='email']").type('test@example.com')
+    cy.get("input[name='password']").type('testtest123')
+    cy.get("button[type='submit']").click()
 })

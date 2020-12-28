@@ -66,16 +66,24 @@ describe('Register test', () => {
     // NEGATIVE TEST
     // First and Last Name should contains max 255 characters
     // Random string generator site: http://www.unit-conversion.info/texttools/random-string-generator/
-    it('Register with invalid first and last name', () => {
-        cy.get(locators.register.firstName).type('KnmJiZNOyPRVcnqSUwmFBZQvaklvNOrddOetsioNGKKxbhynpikxHaYoOfwXfleJFXvReoSJjKAUvrgNHjSusXusXyqasgrNJTNZjNgdXGkhTRKtODJxrkUpORgIUOFdDdtNEJORRAvPOXxRcRJaHCMICAihMaNLmqTlxrlxyCSSMCyvEeGFqTghgpQLPkfdgvgxvwAzoDDuCZSgKGuwqqDPyiUQSAYVZcjkRrwkYaCMBZcAMtxyiXVkHlHGjaxM')
-        cy.get(locators.register.lastName).type('KnmJiZNOyPRVcnqSUwmFBZQvaklvNOrddOetsioNGKKxbhynpikxHaYoOfwXfleJFXvReoSJjKAUvrgNHjSusXusXyqasgrNJTNZjNgdXGkhTRKtODJxrkUpORgIUOFdDdtNEJORRAvPOXxRcRJaHCMICAihMaNLmqTlxrlxyCSSMCyvEeGFqTghgpQLPkfdgvgxvwAzoDDuCZSgKGuwqqDPyiUQSAYVZcjkRrwkYaCMBZcAMtxyiXVkHlHGjaxM')
-        cy.get(locators.register.password).type('testtest123')
-        cy.get(locators.register.confirmPassword).type('testtest123')
-        cy.get(locators.register.email).type('bilja@example.com')
-        cy.get(locators.register.checkboxTerms).check()
+    it.only('Register with all invalid data and empty fields', () => {
+        cy.get(locators.register.firstName).then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please fill out this field.')
+        })
+        cy.get(locators.register.lastName).then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please fill out this field.')
+            // cy.log($input)
+        })
+        cy.get(locators.register.password).type('test').then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please match the requested format.')
+            // cy.log($input)
+        })
+        cy.get(locators.register.confirmPassword).type('test')
+        cy.get(locators.register.email).type('@example.com').then(($input) => {
+            expect($input[0].validationMessage).to.eq("Please enter a part followed by '@'. '@example.com' is incomplete.")
+        })
         cy.get(locators.register.buttonSubmit).click()
         cy.wait(3000)
         cy.url().should('contains', '/register')
-        // cy.get(locators.header.logoutButton).should('not.be.visible') // asertacija - da li se vidi logout button
     })
 })

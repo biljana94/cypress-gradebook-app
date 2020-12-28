@@ -25,7 +25,8 @@
         "buttonSubmit": "button[type='submit']"
     },
     "homePageGradebooks": {
-        "pageTitle": "h3"
+        "pageTitle": "h3",
+        "table": "table"
     },
     "allProfessors": {
         "pageTitle": "h3",

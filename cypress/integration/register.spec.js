@@ -37,13 +37,13 @@ describe('Register test', () => {
 
     // POSITIVE TEST
     it('Register with valid credentials', () => {
-        cy.get(locators.register.firstName).type(userData.randomFirstName)
-        cy.get(locators.register.lastName).type(userData.randomLastName)
-        cy.get(locators.register.password).type(userData.randomPassword)
-        cy.get(locators.register.confirmPassword).type(userData.randomPassword)
-        cy.get(locators.register.email).type(userData.randomEmail)
-        cy.get(locators.register.checkboxTerms).check()
-        cy.get(locators.register.buttonSubmit).click()
+        cy.get(locators.register.firstName).should('be.visible').type(userData.randomFirstName)
+        cy.get(locators.register.lastName).should('be.visible').type(userData.randomLastName)
+        cy.get(locators.register.password).should('be.visible').type(userData.randomPassword)
+        cy.get(locators.register.confirmPassword).should('be.visible').type(userData.randomPassword)
+        cy.get(locators.register.email).should('be.visible').type(userData.randomEmail)
+        cy.get(locators.register.checkboxTerms).should('be.visible').check()
+        cy.get(locators.register.buttonSubmit).should('be.visible').click()
         cy.url().should('contains', '/gradebooks') // asertacija - da li se posle registracije ide na homePage
         // cy.get(locators.header.registerButton).should('not.be.visible')
         cy.get(locators.header.logoutButton).should('be.visible') // asertacija - da li se vidi logout button
@@ -52,13 +52,11 @@ describe('Register test', () => {
 
     it('Register user should be professor', () => {
         cy.get(locators.header.loginButton).click()
-        cy.get(locators.login.email).type(userData.randomEmail)
-        cy.get(locators.login.password).type(userData.randomPassword)
-        cy.get(locators.login.buttonSubmit).click()
-        cy.get(locators.header.professors.professorsDropdown).click()
-        cy.get(locators.header.professors.allProfessorsButton).click()
-        cy.get(locators.allProfessors.pageTitle).should('contain.text', 'All Professors Page')
-        cy.get(locators.allProfessors.filterField).type(userData.randomFirstName).type('{enter}')
+        cy.loginCommand(userData.randomEmail, userData.randomPassword) //login preko komande
+        cy.get(locators.header.professors.professorsDropdown).should('be.visible').click()
+        cy.get(locators.header.professors.allProfessorsButton).should('be.visible').click()
+        cy.get(locators.allProfessors.pageTitle).should('be.visible').and('contain.text', 'All Professors Page')
+        cy.get(locators.allProfessors.filterField).should('be.visible').type(userData.randomFirstName).type('{enter}')
         cy.get('tbody > tr > :nth-child(1)').should('contain.text', userData.randomFirstName)
         cy.get('tbody > tr > :nth-child(2)').should('contain.text', userData.randomLastName)
     })
@@ -67,22 +65,22 @@ describe('Register test', () => {
     // First and Last Name should contains max 255 characters
     // Random string generator site: http://www.unit-conversion.info/texttools/random-string-generator/
     it('Register with all invalid data and empty fields', () => {
-        cy.get(locators.register.firstName).then(($input) => {
+        cy.get(locators.register.firstName).should('be.visible').then(($input) => {
             expect($input[0].validationMessage).to.eq('Please fill out this field.')
         })
-        cy.get(locators.register.lastName).then(($input) => {
+        cy.get(locators.register.lastName).should('be.visible').then(($input) => {
             expect($input[0].validationMessage).to.eq('Please fill out this field.')
             // cy.log($input)
         })
-        cy.get(locators.register.password).type('test').then(($input) => {
+        cy.get(locators.register.password).should('be.visible').type('test').then(($input) => {
             expect($input[0].validationMessage).to.eq('Please match the requested format.')
             // cy.log($input)
         })
-        cy.get(locators.register.confirmPassword).type('test')
-        cy.get(locators.register.email).type('@example.com').then(($input) => {
+        cy.get(locators.register.confirmPassword).should('be.visible').type('test')
+        cy.get(locators.register.email).should('be.visible').type('@example.com').then(($input) => {
             expect($input[0].validationMessage).to.eq("Please enter a part followed by '@'. '@example.com' is incomplete.")
         })
-        cy.get(locators.register.buttonSubmit).click()
+        cy.get(locators.register.buttonSubmit).should('be.visible').click()
         cy.wait(3000)
         cy.url().should('contains', '/register')
     })

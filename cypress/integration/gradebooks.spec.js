@@ -21,10 +21,16 @@ describe('Gradebooks homepage', () => {
         cy.get(locators.homePageGradebooks.table).then((response) => {
             // cy.log(response)
             let dataLength = response[0].tBodies.length
-            // cy.log(data)
-            expect(dataLength).to.equal(10)
-            // let gradebook = response[0].children
-            // cy.log(response[0].children)
+            if(dataLength === 0) {
+                return cy.get(locators.homePageGradebooks.noDiariesMessage).should('be.visible')
+            } else {
+                return expect(dataLength).to.equal(10)
+            }
         })
+        // cy.intercept('GET', 'https://gradebook-api.vivifyideas.com/api/diaries?page=1', { fixture: 'stubDiaries.json' })
+        // cy.wait(2000)
+        // cy.visit('/')
     })
+
+    it('Homepagefilter', () => {})
 })

@@ -16,16 +16,11 @@ let filterData = {
 describe('Gradebooks homepage', () => {
     beforeEach('Login', () => {
         cy.visit('/')
-        // cy.get(locators.header.loginButton)
-        // cy.get(locators.login.email).type(userData.email)
-        // cy.get(locators.login.password).type(userData.password)
-        // cy.get(locators.login.buttonSubmit).click()
         cy.loginCommand(userData.email, userData.password)
     })
 
     it('Homepage visibility', () => {
         cy.get(locators.homePageGradebooks.table).then((response) => {
-            // cy.log(response)
             let dataLength = response[0].tBodies.length
             if(dataLength === 0) {
                 return cy.get(locators.homePageGradebooks.noDiariesMessage).should('be.visible')

@@ -29,7 +29,9 @@
     "homePageGradebooks": {
         "pageTitle": "h3",
         "table": "table",
-        "noDiariesMessage": "p"
+        "noDiariesMessage": "p",
+        "inputFilter": "input[type='text']",
+        "buttonSearch": ".btn"
     },
     "allProfessors": {
         "pageTitle": "h3",

@@ -9,7 +9,7 @@
             "createProfessor": "a[href='/create-professor']"
         },
         "createGradebook": "a[href='/create-gradebook']",
-        "myGradebook": "a[href='/my-gradebook/userId']"
+        "myGradebook": ".nav-link"
     },
     "register": {
         "formTitle": "h2",
@@ -49,6 +49,14 @@
         "buttonSubmit": "button[type='submit']"
     },
     "myGradebook": {
-        "pageTitle": "h3"
+        "pageTitle": "h3",
+        "gradebookTitle": "tbody > tr > :nth-child(2)",
+        "professorName": "tbody > tr > :nth-child(3)",
+        "studentsList": "tbody > tr > :nth-child(4)",
+        "studentName": ":nth-child(4) > ul > li",
+        "addNewStudent": {
+            "addStudentButton": ".btn-primary",
+            "noDiaryValidation": "p"
+        }
     }
 }

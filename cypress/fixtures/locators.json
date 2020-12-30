@@ -31,7 +31,8 @@
         "table": "table",
         "noDiariesMessage": "p",
         "inputFilter": "input[type='text']",
-        "buttonSearch": ".btn"
+        "buttonSearch": ".btn",
+        "buttonNext": ".btn"
     },
     "allProfessors": {
         "pageTitle": "h3",
@@ -60,6 +61,7 @@
         "addNewStudent": {
             "addStudentButton": ".btn-primary",
             "noDiaryValidation": "p"
-        }
+        },
+        "buttonEditGradebook": ".btn-warning"
     }
 }

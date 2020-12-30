@@ -34,7 +34,7 @@ describe('New Gradebook', () => {
         cy.get(locators.header.createGradebook).click()
         cy.get(locators.createGradebook.pageTitle).should('contain.text', 'Create Gradebook Page')
         cy.get(locators.createGradebook.title).type(data.randomTitle)
-        cy.get(locators.createGradebook.professor).select('Biljana Jelaca')
+        cy.get(locators.createGradebook.professor).select('103')
         cy.get(locators.createGradebook.buttonSubmit).click()
         cy.url().should('contains', '/')
     })

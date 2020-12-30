@@ -46,6 +46,7 @@ describe('My Gradebook', () => {
         cy.wait('@successfulGetMyGradebook').then((response) => {
             // console.log(response.response.body.id)
             data.singleGradebookId = response.response.body.id
+            console.log(data.singleGradebookId)
         })
         cy.url().should('contains', `/my-gradebook/${data.userId}`)
         cy.get(locators.myGradebook.pageTitle).should('be.visible').and('have.text', 'My Gradebook Page')
@@ -76,5 +77,18 @@ describe('My Gradebook', () => {
                 return cy.url().should('contains', `/my-gradebook/add-student/${data.singleGradebookId}`)
             }
         })
+    })
+
+    //Na My Gradebook stranici, ili stanici pojedinačnog dnevnika (ukoliko sam razredni staresina), imam dugme “Edit”. 
+    //Ovo dugme me vodi na stranicu “/gradebooks/:id/edit”. 
+    //Na ovoj stranici se prikazuje ista forma kao za dodavanje dnevnika sa dodatkom liste ucenika (koji su predhodno dodati) 
+    //i imam iste opcije kao i tamo. (ovde mogu da editujem, kao i da dodajem ili sklanjam učenike iz liste. 
+    //Nakon uspešne izmene, preusmeren sam opet na My Gragebook stranicu ili stanicu pojedinacnog dnevnika ,gde vidim izmenjene podatke.
+
+    it('Edit Gradebook', () => {
+        cy.get(locators.header.myGradebook).eq(1).should('be.visible').click()
+        cy.url().should('contains', `/my-gradebook/${data.userId}`)
+        cy.get(locators.myGradebook.buttonEditGradebook).should('be.visible').click()
+        cy.url().should('contains', `/single-gradebook/${data.singleGradebookId}/edit`)
     })
 })

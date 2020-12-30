@@ -38,7 +38,19 @@ describe('Gradebooks homepage', () => {
 
     it('Homepagefilter - case sensitive test', () => {
         cy.visit('/')
+        cy.intercept('GET', 'https://gradebook-api.vivifyideas.com/api/search?search_term=DNEVNIK&page=1', (req) => {
+
+        }).as('getSearchResults')
         cy.get(locators.homePageGradebooks.inputFilter).should('be.visible').type(filterData.uppercaseWord)
         cy.get(locators.homePageGradebooks.buttonSearch).eq(0).should('be.visible').click()
+        cy.wait('@getSearchResults').then((response) => {
+            // console.log(response.response.body.data)
+            filterData.arrResultUppercase = response.response.body.data
+            filterData.arrResultUppercase.forEach(($e) => {
+                expect($e.title).to.contains('Dnevnik', { matchCase: false }) // OVO NE RADI!!!!!
+            })
+        })
+        
+        // cy.get(locators.homePageGradebooks.buttonNext).eq(2).should('be.visible').click()
     })
 })

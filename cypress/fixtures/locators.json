@@ -60,8 +60,17 @@
         "studentName": ":nth-child(4) > ul > li",
         "addNewStudent": {
             "addStudentButton": ".btn-primary",
-            "noDiaryValidation": "p"
+            "noDiaryValidation": "p",
+            "studentFirstName": "#firstName",
+            "studentLastName": "#lastName",
+            "addImgButton": ".btn",
+            "studentImg": "input[placeholder='Image URL']",
+            "submitButton": ".btn"
         },
-        "buttonEditGradebook": ".btn-warning"
+        "editGradebook": {
+            "buttonEditGradebook": ".btn-warning",
+            "title": "#title",
+            "submitButton": ".btn"
+        }
     }
 }

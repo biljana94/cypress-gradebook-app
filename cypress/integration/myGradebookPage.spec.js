@@ -3,13 +3,6 @@
 const locators = require('../fixtures/locators.json')
 const faker = require('faker')
 
-//Kada kao korisnik pristupim ovoj stranici, vidim svoj dnevnik (na kome sam dodeljen kao razredni starešina). 
-//Vidim naziv razrednog staresine (u ovom slucaju moje ime), kao i liste učenika. 
-//Ukoliko nemam dodeljenog ni jednog učenika prikazujemo odgovarajucu poruku. 
-//U gornjem levom uglu se nalazi dugme “Add New Students”. 
-//Klikom na njega otvara se nova stranica za dodavanje učenika (‘/gradebooks/:id/students/create’). 
-//Ukoliko nisam dodeljen kao razredni starešina ni na jedan dnevnik prikazuje mi se samo odgovarajuća poruka.
-
 let data = {
     email: 'test@example.com',
     password: 'testtest123',
@@ -17,7 +10,15 @@ let data = {
     userId: '',
     userFirstName: '',
     userLastName: '',
-    singleGradebookId: ''
+    singleGradebookId: '',
+    gradebookTitle: '',
+    randomWord: faker.lorem.word()
+}
+
+let student = {
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    image: faker.image.avatar()
 }
 
 describe('My Gradebook', () => {
@@ -44,51 +45,60 @@ describe('My Gradebook', () => {
         }).as('successfulGetMyGradebook')
         cy.get(locators.header.myGradebook).eq(1).should('be.visible').click()
         cy.wait('@successfulGetMyGradebook').then((response) => {
-            // console.log(response.response.body.id)
+            // console.log('****************************************************************')
+            // console.log(response)
+            // console.log('****************************************************************')
             data.singleGradebookId = response.response.body.id
-            console.log(data.singleGradebookId)
+            data.gradebookTitle = response.response.body.title
+            // console.log(data.singleGradebookId + 'single gradebook id')
         })
         cy.url().should('contains', `/my-gradebook/${data.userId}`)
         cy.get(locators.myGradebook.pageTitle).should('be.visible').and('have.text', 'My Gradebook Page')
-        cy.get(locators.myGradebook.gradebookTitle).should('be.visible').and('have.text', 'test')
+        cy.get(locators.myGradebook.gradebookTitle).should('be.visible')
         cy.get(locators.myGradebook.professorName).should('be.visible').and('contain.text', data.userFirstName + ' ' + data.userLastName)
         cy.get(locators.myGradebook.studentsList).should('be.visible').then(($list) => {
-            console.log($list)
+            // console.log($list)
             if(!$list === '') {
                 return expect($list).to.contain('You do not have an assigned student')
             } else {
                 return $list
             }
         })
-        cy.get(locators.myGradebook.addNewStudent.addStudentButton).eq(0).should('be.visible').click()
-        cy.url().should('contains', `/my-gradebook/add-student/${data.singleGradebookId}`)
     })
 
     it('Add New Student', () => {
+        // console.log(data.singleGradebookId + 'OVO MI TREBA')
         cy.get(locators.header.myGradebook).eq(1).should('be.visible').click()
         cy.url().should('contains', `/my-gradebook/${data.userId}`)
         cy.wait(2000)
         cy.get(locators.myGradebook.gradebookTitle).then(($diary) => {
+            // console.log(data.singleGradebookId + 'OVO MI TREBA')
             if($diary === '') {
                 cy.get(locators.myGradebook.addNewStudent.addStudentButton).eq(0).should('be.visible').click()
-                return cy.get(locators.myGradebook.addNewStudent.noDiaryValidation).should('be.visible')
+                cy.get(locators.myGradebook.addNewStudent.noDiaryValidation).should('be.visible')
             } else {
                 cy.get(locators.myGradebook.addNewStudent.addStudentButton).eq(0).should('be.visible').click()
-                return cy.url().should('contains', `/my-gradebook/add-student/${data.singleGradebookId}`)
+                cy.url().should('contains', `/my-gradebook/add-student/${data.singleGradebookId}`)
+                cy.get(locators.myGradebook.addNewStudent.studentFirstName).should('be.visible').type(student.firstName)
+                cy.get(locators.myGradebook.addNewStudent.studentLastName).should('be.visible').type(student.lastName)
+                cy.get(locators.myGradebook.addNewStudent.addImgButton).should('be.visible').eq(0).click()
+                cy.get(locators.myGradebook.addNewStudent.studentImg).should('be.visible').type(student.image)
+                cy.get(locators.myGradebook.addNewStudent.submitButton).eq(4).click()
+                cy.url().should('contains', `/single-gradebook/${data.singleGradebookId}`)
             }
         })
     })
 
-    //Na My Gradebook stranici, ili stanici pojedinačnog dnevnika (ukoliko sam razredni staresina), imam dugme “Edit”. 
-    //Ovo dugme me vodi na stranicu “/gradebooks/:id/edit”. 
-    //Na ovoj stranici se prikazuje ista forma kao za dodavanje dnevnika sa dodatkom liste ucenika (koji su predhodno dodati) 
-    //i imam iste opcije kao i tamo. (ovde mogu da editujem, kao i da dodajem ili sklanjam učenike iz liste. 
-    //Nakon uspešne izmene, preusmeren sam opet na My Gragebook stranicu ili stanicu pojedinacnog dnevnika ,gde vidim izmenjene podatke.
-
     it('Edit Gradebook', () => {
         cy.get(locators.header.myGradebook).eq(1).should('be.visible').click()
         cy.url().should('contains', `/my-gradebook/${data.userId}`)
-        cy.get(locators.myGradebook.buttonEditGradebook).should('be.visible').click()
+        cy.get(locators.myGradebook.editGradebook.buttonEditGradebook).should('be.visible').click()
         cy.url().should('contains', `/single-gradebook/${data.singleGradebookId}/edit`)
+        cy.wait(5000)
+        cy.get(locators.myGradebook.editGradebook.title).should('be.visible').and('have.value', data.gradebookTitle).type(' ' + data.randomWord)
+        cy.get(locators.myGradebook.editGradebook.submitButton).should('be.visible').click()
+        cy.url().should('contains', '/gradebooks')
+        cy.get(locators.header.myGradebook).eq(1).click()
+        cy.get(locators.myGradebook.gradebookTitle).should('be.visible').and('have.text', data.gradebookTitle + ' ' + data.randomWord)
     })
 })

@@ -30,13 +30,7 @@ describe('Gradebooks homepage', () => {
         })
     })
 
-
-    //Kao korisnik na vrhu home stranice vidim input polje preko kojeg mogu da filtriram dnevnike. 
-    //Kada ukucam termin i kliknem na dugme “Filtriraj” koje se nalazi pored, 
-    //prikazuju mi se samo dnevnici koji imaju ukucan termin u imenu dnevnika (podrazumeva se partial term kao i case insensitive). 
-    //Paginacija se i dalje prikazuje i klikom na “load more” dugme se učitava novih 10 dnevnika koji zadovoljavaju kriterijume filtera.
-
-    it('Homepagefilter - case sensitive test', () => {
+    it('Homepagefilter (case sensitive test)', () => {
         cy.visit('/')
         cy.intercept('GET', 'https://gradebook-api.vivifyideas.com/api/search?search_term=DNEVNIK&page=1', (req) => {
 
@@ -47,10 +41,22 @@ describe('Gradebooks homepage', () => {
             // console.log(response.response.body.data)
             filterData.arrResultUppercase = response.response.body.data
             filterData.arrResultUppercase.forEach(($e) => {
-                expect($e.title).to.contains('Dnevnik', { matchCase: false }) // OVO NE RADI!!!!!
+                let title = $e.title.toLowerCase()
+                let filteredWord = filterData.uppercaseWord.toLowerCase()
+                expect(title).to.include(filteredWord)
             })
         })
-        
-        // cy.get(locators.homePageGradebooks.buttonNext).eq(2).should('be.visible').click()
+        cy.intercept('GET', 'https://gradebook-api.vivifyideas.com/api/search?search_term=DNEVNIK&page=2', (req) => {
+
+        }).as('sec')
+        cy.get(locators.homePageGradebooks.buttonNext).eq(2).should('be.visible').click()
+        cy.wait('@sec').then((response) => {
+            filterData.arrResultUppercase = response.response.body.data
+            filterData.arrResultUppercase.forEach(($e) => {
+                let title = $e.title.toLowerCase()
+                let filteredWord = filterData.uppercaseWord.toLowerCase()
+                expect(title).to.include(filteredWord)
+            })
+        })
     })
 })
